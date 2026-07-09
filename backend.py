@@ -14,7 +14,7 @@ def setup_database():
             description TEXT,
             image_path TEXT
         )
-    """)
+    """) #tuple index 0-4
 
     con.commit()
 
@@ -23,7 +23,7 @@ setup_database() # Runs every startup. Creates database table if it doesn't exis
 
 # structures ----------------------------------------------
 
-cart = {} # Dictionary storing item_id as key and quantity as value.
+cart = {} # Dictionary storing item_id as key and quantity as value. used to create a receipt.
 
 
 # major functions ---------------------------------------------
@@ -50,6 +50,13 @@ def get_items():
 
     return items
 
+def get_item(item_id):
+    #returns a specific item from db to menu/receipt
+    cur.execute("SELECT * FROM items WHERE item_id = ?",(item_id,))
+    item = cur.fetchone()
+
+    return item
+
 
 def add_to_order(item_id):
     #adds new item into the cart
@@ -70,3 +77,14 @@ def remove_from_order(item_id):
             cart[item_id] -= 1
 
     print(cart)
+
+def calculate_total():
+    total = 0
+
+    for i in cart:
+        quantity = cart[i]
+        item = get_item(i)
+        price = item[2] * quantity
+        total += price
+
+    return total
