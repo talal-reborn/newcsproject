@@ -79,12 +79,17 @@ def remove_from_order(item_id):
     print(cart)
 
 def calculate_total():
+    #calc total bill -- gets cart item, gets its price, multiplies by quantity, updates running total.
+    
     total = 0
 
     for i in cart:
         quantity = cart[i]
         item = get_item(i)
-        price = item[2] * quantity
-        total += price
+        subtotal = item[2] * quantity
+        total += subtotal
 
     return total
+
+add_item("Burger", 5.99, "patties, buns, and amazing cheese", "burger.png")
+print(get_items())
