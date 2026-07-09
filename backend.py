@@ -91,5 +91,11 @@ def calculate_total():
 
     return total
 
-add_item("Burger", 5.99, "patties, buns, and amazing cheese", "burger.png")
-print(get_items())
+def clear_order():
+    #clear order from cart/complete for fresh new
+    cart.clear()
+    print(cart)
+
+
+'''add_item("Burger", 5.99, "patties, buns, and amazing cheese", "burger.png")
+print(get_items())'''
