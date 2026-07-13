@@ -2,6 +2,10 @@ import tkinter as tk
 from tkinter import messagebox
 import backend
 
+
+TEST_STALL_ID = 1  # Temporary until real stall selection is connected.
+
+
 class CarnivalApp(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -30,7 +34,11 @@ class StallSelectionScreen(tk.Frame):
         super().__init__(parent)
         self.controller = controller
 
-        label = tk.Label(self, text="Select a stall", font=("Arial", 24))
+        label = tk.Label(
+            self,
+            text="Select a stall",
+            font=("Arial", 24)
+        )
         label.pack(pady=20)
 
         test_button = tk.Button(
@@ -66,7 +74,12 @@ class StallPOSScreen(tk.Frame):
         title_label.pack(side="left", padx=20)
 
         main_layout = tk.Frame(self)
-        main_layout.pack(fill="both", expand=True, padx=15, pady=10)
+        main_layout.pack(
+            fill="both",
+            expand=True,
+            padx=15,
+            pady=10
+        )
 
         # Menu side -------------------------------------------------
 
@@ -77,14 +90,19 @@ class StallPOSScreen(tk.Frame):
             padx=10,
             pady=10
         )
-        menu_frame.pack(side="left", fill="both", expand=True, padx=(0, 10))
+        menu_frame.pack(
+            side="left",
+            fill="both",
+            expand=True,
+            padx=(0, 10)
+        )
 
-        items = backend.get_items()
+        items = backend.get_items(TEST_STALL_ID)
 
         for item in items:
             item_id = item[0]
-            item_name = item[1]
-            price = item[2]
+            item_name = item[2]
+            price = item[3]
 
             item_btn = tk.Button(
                 menu_frame,
@@ -103,14 +121,21 @@ class StallPOSScreen(tk.Frame):
             padx=10,
             pady=10
         )
-        order_frame.pack(side="right", fill="both")
+        order_frame.pack(
+            side="right",
+            fill="both"
+        )
 
         self.order_items_frame = tk.Frame(order_frame)
-        self.order_items_frame.pack(fill="both", expand=True, pady=10)
+        self.order_items_frame.pack(
+            fill="both",
+            expand=True,
+            pady=10
+        )
 
         self.total_label = tk.Label(
             order_frame,
-            text="Total: KWD 0.00",
+            text="Total: KWD 0.000",
             font=("Arial", 16, "bold"),
             fg="green"
         )
@@ -128,7 +153,12 @@ class StallPOSScreen(tk.Frame):
             height=2,
             command=self.cancel_order_click
         )
-        cancel_btn.pack(side="left", fill="x", expand=True, padx=(0, 5))
+        cancel_btn.pack(
+            side="left",
+            fill="x",
+            expand=True,
+            padx=(0, 5)
+        )
 
         checkout_btn = tk.Button(
             btn_frame,
@@ -138,7 +168,12 @@ class StallPOSScreen(tk.Frame):
             fg="white",
             height=2
         )
-        checkout_btn.pack(side="right", fill="x", expand=True, padx=(5, 0))
+        checkout_btn.pack(
+            side="right",
+            fill="x",
+            expand=True,
+            padx=(5, 0)
+        )
 
     def add_item_click(self, item_id):
         backend.add_to_order(item_id)
@@ -160,15 +195,24 @@ class StallPOSScreen(tk.Frame):
             item = backend.get_item(item_id)
             quantity = backend.cart[item_id]
 
-            item_name = item[1]
-            price = item[2]
+            item_name = item[2]
+            price = item[3]
             subtotal = price * quantity
 
             row = tk.Frame(self.order_items_frame)
             row.pack(fill="x", pady=4)
 
-            name_label = tk.Label(row, text=item_name, font=("Arial", 11), anchor="w")
-            name_label.pack(side="left", fill="x", expand=True)
+            name_label = tk.Label(
+                row,
+                text=item_name,
+                font=("Arial", 11),
+                anchor="w"
+            )
+            name_label.pack(
+                side="left",
+                fill="x",
+                expand=True
+            )
 
             minus_btn = tk.Button(
                 row,
@@ -178,7 +222,12 @@ class StallPOSScreen(tk.Frame):
             )
             minus_btn.pack(side="left", padx=2)
 
-            qty_label = tk.Label(row, text=str(quantity), font=("Arial", 11), width=3)
+            qty_label = tk.Label(
+                row,
+                text=str(quantity),
+                font=("Arial", 11),
+                width=3
+            )
             qty_label.pack(side="left")
 
             plus_btn = tk.Button(
@@ -191,14 +240,17 @@ class StallPOSScreen(tk.Frame):
 
             subtotal_label = tk.Label(
                 row,
-                text="KWD " + str(subtotal),
+                text=f"KWD {subtotal:.3f}",
                 font=("Arial", 11),
                 width=10
             )
             subtotal_label.pack(side="right")
 
         total = backend.calculate_total()
-        self.total_label.config(text="Total: KWD " + str(total))
+
+        self.total_label.config(
+            text=f"Total: KWD {total:.3f}"
+        )
 
 
 if __name__ == "__main__":
